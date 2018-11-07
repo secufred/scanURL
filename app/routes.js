@@ -14,7 +14,7 @@ module.exports = function(app) {
     var returnJSON = {};
 
 
-    var p1 = new Promise(function(resolve, reject) {
+    var p1 = new Promise(function(resolve) {
       (async() => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
@@ -82,9 +82,9 @@ module.exports = function(app) {
           });
           siteInfo.save(); //save the information to the db.
           await browser.close(); //regardless of the outcome, close the browser.
-          resolve({ "ip": ip });
+          resolve({ "ip": ip }); 
         } catch (err) {
-          res.status(400).send(JSON.stringify(err));
+          res.status(400).send(JSON.stringify(err));  //without further ado, return the error
           resolve(err);
         }
       })()

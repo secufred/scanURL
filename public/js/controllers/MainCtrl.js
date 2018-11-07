@@ -1,5 +1,6 @@
 angular.module('MainCtrl', []).controller('MainController', function($scope, $http, config) {
 
+
   $scope.submit = function() {
     url = $scope.inputUrl;
     $scope.showSpinner = true;

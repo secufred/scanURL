@@ -7,8 +7,8 @@ This projects automatically extracts the relevant information from the given url
 2. Install bower dependencies `bower install`
 3. Execute `mongod` on terminal tab to start running the mongodb instance
 4. Create a database called "redmarlin" or name it yourself and change the name configuration in config/config.js
-5. Navigate to the app's main directory and start up the server: `node server.js`
-6. View in browser at http://localhost:8080
+5. Navigate to the app's main directory and start up the server by executing: `node server.js`
+6. View the running app in browser at http://localhost:8080
 
 ## FEATURES
 * Screenshot
@@ -19,9 +19,10 @@ This projects automatically extracts the relevant information from the given url
 * ASN information for IP address
 * SSL Certificate details in case of https site
 
-## Used Backend Libraries
+## External Backend Libraries
 * https://www.npmjs.com/package/ip-to-asn
 * https://github.com/GoogleChrome/puppeteer
+* https://github.com/WebReflection/circular-json
 
 
 NOTE: Getting the response may take a while, depending on how fast/slow the website we're querying and how much information there.
