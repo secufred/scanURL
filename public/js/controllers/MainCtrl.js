@@ -24,7 +24,6 @@ SOFTWARE.
 
 angular.module('MainCtrl', []).controller('MainController', function($scope, $http, config) {
 
-
   $scope.submit = function() {
     url = $scope.inputUrl;
     $scope.showSpinner = true;
@@ -33,7 +32,6 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
     if (url.indexOf(prefix) == -1) {
       url = prefix + '://' + url;
     }
-
 
     data = JSON.stringify({ url: url })
 
@@ -51,6 +49,9 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
       $scope.sourceDestination = response.data.sourceDestination;
       $scope.redirectChain = response.data.redirectChain;
       $scope.certificate = response.data.certificate;
+      if(Object.keys($scope.certificate).length == 0){
+        $scope.certificate = null;
+      }
       $scope.ASN = response.data.ASN;
       $scope.showSpinner = false;
     }, function errorCallback(response) {
