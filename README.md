@@ -15,6 +15,7 @@ This projects automatically extracts the relevant information from the given url
 * Page source
 * IP address
 * Source and destination URLs (in case of redirection)
+* Redirect Chain (in case of redirection)
 * All requests made by the site
 * ASN information for IP address
 * SSL Certificate details in case of https site
@@ -27,7 +28,7 @@ This projects automatically extracts the relevant information from the given url
 
 NOTE: Getting the response may take a while, depending on how fast/slow the website we're querying and how much information there.
 Sections like Page Source and All Requests are scrollable, make sure you check them out!
-Requests sent by a website could also be saved into the db in a desired format as future work.
+Requests sent by a website and other information could also be saved into the db in a desired format as future work.
 
 <p align="center">
   <img src="scanURLSS/booking_1.png" width="350" title="Booking">

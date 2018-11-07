@@ -1,15 +1,37 @@
+/*
+MIT License
+
+Copyright (c) 2018 Serhan Öztekin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 const puppeteer = require('puppeteer');
-var SiteInfo = require("../app/models/siteInfo");
+const SiteInfo = require("../app/models/siteInfo");
 const JSON = require('circular-json');
-var IPToASN = require('ip-to-asn');
-var client = new IPToASN();
+const IPToASN = require('ip-to-asn');
+const client = new IPToASN();
 
 
 module.exports = function(app) {
   app.post('/info', function(req, res, next) {
     const url = req.body.url;
-    var r = /:\/\/(.[^/]+)/; // extracts the domain name from the url
-    const domain = url.match(r)[1];
     var ip = "";
     var returnJSON = {};
 
@@ -82,9 +104,9 @@ module.exports = function(app) {
           });
           siteInfo.save(); //save the information to the db.
           await browser.close(); //regardless of the outcome, close the browser.
-          resolve({ "ip": ip }); 
+          resolve({ "ip": ip });
         } catch (err) {
-          res.status(400).send(JSON.stringify(err));  //without further ado, return the error
+          res.status(400).send(JSON.stringify(err)); //without further ado, return the error
           resolve(err);
         }
       })()
