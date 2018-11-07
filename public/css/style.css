@@ -1,6 +1,6 @@
 body { padding-top:30px; }
 
 .pageSource {
-  height:150px;
+  height:15em;
   overflow-y: scroll;
 }

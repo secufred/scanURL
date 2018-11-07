@@ -25,28 +25,28 @@ module.exports = function(app) {
 
       page.on('response', async(res) => {
         if (res.securityDetails() != null && !foundCertificate) {
-            certificate = res.securityDetails();
-            foundCertificate = true;
+          certificate = res.securityDetails();
+          foundCertificate = true;
         }
       });
 
       try {
         const response = await page.goto(url)
         const screenshot = await page.screenshot();
-        const resp = await response.text();
+        const resp = await response.text();  //page source
 
         const ip = response._request._response._remoteAddress.ip;
-        const requests = response.request().redirectChain();
+        const requests = response.request().redirectChain(); // the chain of redirection, in case of any
 
         redirectChain = [];
         for (i = 0; i < requests.length; i++) {
           redirectChain.push(requests[i].url());
         }
 
-        if( "_validFrom" in certificate && "_validTo" in certificate) {
-              certificate["_validFrom"] = new Date(certificate["_validFrom"] * 1000).toLocaleDateString("en-US");
-              certificate["_validTo"] = new Date(certificate["_validTo"] * 1000).toLocaleDateString("en-US");
-          }
+        if ("_validFrom" in certificate && "_validTo" in certificate) {
+          certificate["_validFrom"] = new Date(certificate["_validFrom"] * 1000).toLocaleDateString("en-US");
+          certificate["_validTo"] = new Date(certificate["_validTo"] * 1000).toLocaleDateString("en-US");
+        }
 
         const returnJSON = {
           "resp": resp.toString(),
@@ -61,11 +61,10 @@ module.exports = function(app) {
           "certificate": certificate
         };
 
-        res.status(200).send(JSON.stringify(returnJSON))
+        res.status(200).send(JSON.stringify(returnJSON));
         siteInfo = new SiteInfo({ img: { data: screenshot, contentType: 'image/png' }, url: url, ip: ip });
         siteInfo.save();
       } catch (err) {
-        console.log(err)
         res.status(404).send(err);
       }
 

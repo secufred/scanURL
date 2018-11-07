@@ -2,11 +2,12 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
 
   $scope.submit = function() {
     url = $scope.inputUrl;
-
-    var prefix = 'http://';
-    if (url.substr(0, prefix.length) !== prefix)
+    $scope.showSpinner = true;
+    var prefix = 'http';
+    
+    if (url.indexOf(prefix) == -1)
     {
-        url = prefix + url;
+        url = prefix + '://' + url;
     }
 
 
@@ -27,8 +28,12 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
       $scope.sourceDestination = response.data.sourceDestination;
       $scope.redirectChain = response.data.redirectChain;
       $scope.certificate = response.data.certificate;
+      $scope.showSpinner = false;
     }, function errorCallback(response) {
+      console.log(response)
       $scope.disp_error = true;
+      $scope.found = false;
+      $scope.showSpinner = false;
     });
   };
 
