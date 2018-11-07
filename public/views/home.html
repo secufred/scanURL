@@ -1,0 +1,112 @@
+<div class="jumbotron text-center">
+  <h1>Scan URL</h1>
+  <label for="basic-url"></label>
+  <form ng-submit="submit()">
+    <div class="input-group mb-3">
+      <input ng-model="inputUrl" class="form-control" placeholder="https://example.com" id="basic-url" aria-describedby="basic-addon3">
+      <button class="btn btn-outline-secondary" type="submit">GO!</button>
+    </div>
+  </form>
+  <div ng-show="disp_error" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="error-template">
+          <h1>
+                    Oops!</h1>
+          <h2>
+                    404 Not Found</h2>
+          <div class="error-details">
+            Sorry, an error has occured while extracting information!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="found" class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <h6 class="alert alert-info">Page Source</h6>
+        </div>
+        <div class="col-sm">
+          <h6 class="alert alert-success">Screenshot</h6>
+        </div>
+        <div class="col-sm">
+          <h6 class="alert alert-warning">IP Address</h6>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm pageSource">
+            {{pageSource}}
+          </div>
+          <div class="col-sm">
+            <div>
+              <img style="height:100%; width:100%;" ng-src="data:image/JPEG;base64,{{ss}}">
+            </div>
+          </div>
+          <div class="col-sm">
+            <br>{{ip}}</br>
+          </div>
+        </div>
+        <div class="row mt-3" ng-show="redirectChain.length > 0">
+          <div class="col-sm">
+            <h6 class="alert alert-info">Redirect Chain</h6>
+          </div>
+          <div class="col-sm" ng-show="redirectChain.length > 0">
+            <h6 class="alert alert-info">Source And Destination</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-show="redirectChain.length > 0">
+        <div class="col-sm pageSource">
+          <table class="table" style="width: 100%;" >
+            <tbody>
+              <tr class="d-flex" ng-repeat="element in redirectChain">
+                <td>{{ $index + 1 }}</td>
+                <td align="left">
+                  <div style="word-break:break-all;">{{element}}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm">
+        	<p class="text-success">Source:</p>
+        	<div style="word-break:break-all;">{{sourceDestination.source}}</div>
+        	<br>
+        	<p class="text-danger">Destination:</p>
+        	<div style="word-break:break-all;">{{sourceDestination.destination}}</div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm">
+          <h6 class="alert alert-info">All Requests</h6>
+          <div class="container">
+            <div class="col-sm pageSource">
+              <table class="table" style="width: 100%;" ng-show="allRequests.length > 0">
+                <tbody>
+                  <tr class="d-flex" ng-repeat="element in allRequests">
+                    <td align="left">
+                      <div style="word-break:break-all;">{{element.url}}</div>
+                    </td>
+                    <td align="right"> <span style="display: inline;">{{element.method}}</span></td>
+                  </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm">
+          <h6 class="alert alert-info">SSL Certificate Details</h6>
+              <div style="display: inline-block; right;padding: 1em;"><p><h5>Subject Name: </h5>{{certificate._subjectName}} </p> </div>
+              <div style="display: inline-block; right;padding: 1em;"><h5>Certificate Issuer: </h5>{{certificate._issuer}} </div>
+              <div style="display: inline-block; right;padding: 1em;"><h5>Valid From: </h5>{{certificate._validFrom}} </div>
+              <div style="display: inline-block; right;padding: 1em;"><h5>Valid To: </h5>{{certificate._validTo}} </div>
+              <div style="display: inline-block;"><h5>Protocol: </h5>{{certificate._protocol}} </p> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
