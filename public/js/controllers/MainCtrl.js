@@ -13,7 +13,6 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
 
     data = JSON.stringify({ url: url })
 
-    //TO-DO: move this to the WebInfoService
     $http({
       url: config.baseUrl + 'info',
       method: 'POST',
@@ -28,9 +27,9 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
       $scope.sourceDestination = response.data.sourceDestination;
       $scope.redirectChain = response.data.redirectChain;
       $scope.certificate = response.data.certificate;
+      $scope.ASN = response.data.ASN;
       $scope.showSpinner = false;
     }, function errorCallback(response) {
-      console.log(response)
       $scope.disp_error = true;
       $scope.found = false;
       $scope.showSpinner = false;

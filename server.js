@@ -27,5 +27,5 @@ require('./app/routes')(app);
 // start app ===============================================
 app.listen(port);	
 
-console.log("server running on port " + port);
+console.log("server listening on "+ "localhost:" + port);
 exports = module.exports = app;
