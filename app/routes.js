@@ -37,7 +37,7 @@ module.exports = function(app) {
       extractInfoHelper(url, function(returnJSON, err) {
 
         if (err) {
-          res.status(400).send(JSON.stringify(returnJSON)); //without further ado, return the error
+          res.status(400).send(JSON.stringify(err)); //without further ado, return the error
         } else {
           siteInfo = new SiteInfo({
             img: { data: returnJSON.ss, contentType: 'image/png' },

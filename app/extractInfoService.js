@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const urlLib = require('url');
 
 /*
 This function extracts all the information we want from the website by using the puppeteer library.
@@ -12,8 +13,8 @@ exports.extractInfo = function(url, callback) {
 
     await page.setRequestInterception(true);
     allRequests = []; // all requests made by the website
-    certificate = {}; // all certificates of the requests made by the website, needs to be filtered with the domain name we search for.
-    foundCertificate = false; // serves as breaking from listening the responses. If certificate matching with the domain name has already been found, then we can stop listening for the requests.
+    allCertificates = []; // all certificates of the requests made by the website. We will extract the certificate to the domain we search for.
+    certificate = {};
 
     page.on('request', (request) => {
       allRequests.push({ "url": request.url().trim(), "method": request.method() });
@@ -21,9 +22,8 @@ exports.extractInfo = function(url, callback) {
     });
 
     page.on('response', async(resPage) => {
-      if (resPage.securityDetails() != null && !foundCertificate) {
-        certificate = resPage.securityDetails();
-        foundCertificate = true;
+      if (resPage.securityDetails() != null) {
+        allCertificates.push(resPage.securityDetails());
       }
     });
 
@@ -31,7 +31,9 @@ exports.extractInfo = function(url, callback) {
     // and also break down individiual services (screenshot, pagesource etc) in different try catch statements
     // In order to make sure that if one of them fails the others won't be affected.
     try {
-      const response = await page.goto(url)
+      const response = await page.goto(url, {
+        timeout: 3000000
+      });
       const screenshot = await page.screenshot();
 
       const resp = await response.text(); //page source
@@ -42,6 +44,15 @@ exports.extractInfo = function(url, callback) {
       redirectChain = [];
       for (i = 0; i < requests.length; i++) {
         redirectChain.push(requests[i].url());
+      }
+
+      //filter the certificates, search only for the website's certificate. We need to consider redirection to https as well.
+      const domain = urlLib.parse(url).hostname;
+      for (i = 0; i < allCertificates.length; i++) {
+        if (allCertificates[i]._subjectName.indexOf(domain) > -1 || redirectChain.indexOf(allCertificates[i]._subjectName) > -1) {
+          certificate = allCertificates[i];
+          break;
+        }
       }
 
       if ("_validFrom" in certificate && "_validTo" in certificate) {
