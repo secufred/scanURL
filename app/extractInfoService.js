@@ -27,6 +27,9 @@ exports.extractInfo = function(url, callback) {
       }
     });
 
+    // TO-DO: for the future work, we might also consider sharing a global puppeteer "page" instance
+    // and also break down individiual services (screenshot, pagesource etc) in different try catch statements
+    // In order to make sure that if one of them fails the others won't be affected.
     try {
       const response = await page.goto(url)
       const screenshot = await page.screenshot();

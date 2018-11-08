@@ -50,7 +50,7 @@ module.exports = function(app) {
           siteInfo.save(function(err, doc, num) {
             if (err) {
               console.log(err);
-              //could log the mongoose err to database as future work.  
+              //could log all the errors to database as future work.  
             }
           });
         }
@@ -58,8 +58,8 @@ module.exports = function(app) {
     });
 
     // This function extracts the ASN information of a given ip address(obtained by the first promise)
+    //IPToASN library requires the input to be of type array, takes ip as the input from the first call.
     p1.then(function(returnJSON) {
-      //IPToASN library requires the input to be of type array, takes ip as the input from the first call.
       if ("ip" in returnJSON) {
         client.query([ip], function(err, results) {
           if (err) {
@@ -67,6 +67,7 @@ module.exports = function(app) {
           } else {
             returnJSON["ASN"] = results[ip];
           }
+          // if err, the resurnJSON won't have "ASN" field and it will be checked in the front end side, and it won't display any results.
           res.status(200).send(JSON.stringify(returnJSON));
         });
       }
